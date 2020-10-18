@@ -9,19 +9,19 @@ class Maths:
 
 
 class Pizza:
-
     def __init__(self, ingredients):
         self.ingredients = ingredients
 
+    def __repr__(self):
+        return str(self.ingredients)
+
     @classmethod
     def margherita(cls):
-        cls.ingredients = ['mozzarella', 'tomatoes']
-        return cls
+        return cls(['mozzarella', 'tomatoes'])
 
     @classmethod
     def prosciutto(cls):
-        cls.ingredients = ['mozzarella', 'tomatoes', 'ham']
-        return cls
+        return cls(['mozzarella', 'tomatoes', 'ham'])
 
 
 class Concert:

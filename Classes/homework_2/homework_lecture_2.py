@@ -55,4 +55,4 @@ class Book:
         self.pages_num = pages_num
 
     def __str__(self):
-        return f"BookDataclass(title='{self.title}', author='{self.author}', pages_num={self.pages_num})"
+        return str(BookDataclass(title=self.title, author=self.author, pages_num=self.pages_num)

@@ -10,10 +10,19 @@ def double_result(func):
     return real_double_result
 
 
+def add(a, b):
+    return a + b
+
+
+print(f"__________TASK #1__________:\n\nTest: 1 + 2 = {add(1, 2)}")
+
+
 @double_result
 def add(a, b):
     return a + b
 
+
+print(f"After multiplying the result of 1 + 2 by 2 the result is: {add(1, 2)}\n")
 
 """TASK #2"""
 
@@ -34,7 +43,8 @@ def add(a, b):
     return a + b
 
 
-print(add(2, 2))
+print(f"______________TASK #2_______________\n\nThe result of 2 + 2 is \n==>{add(2, 2)}\n")
+print(f"The result of 1 + 2:\n==>{add(1, 2)}\n")
 
 
 @only_even_parameters
@@ -42,6 +52,7 @@ def multiply(a, b, c, d, e):
     return a * b * c * d * e
 
 
+print(f"ANOTHER TEST:\n\nResult of 1 * 2 * 2 * 2 * 2 is\n{multiply(1, 2, 2, 2, 2)}\n")
 """TASK #3"""
 
 logger = logging.getLogger("Logging args and returns")
@@ -52,7 +63,9 @@ logger.addHandler(handler)
 
 def logged(func):
     def logging_args(*args, **kwargs):
-        logger.info(f"Arguments: {args} \nKeyword Arguments: {kwargs} \nResult of a function: {func(*args)}")
+        logger.info(f"_______________TASK #3_______________\n\nTHIS IS A LOG\n===================\nArguments: {args} "
+                    f"\nKeyword Arguments: {kwargs} \n"
+                    f"Result of a function: {func(*args)}\n===================\n____________________________________")
         return func(*args)
 
     return logging_args
@@ -63,10 +76,10 @@ def funky(*args):
     return 5 + len(args)
 
 
-print(funky(4, 4, 4))
-
+funky(4, 4, 4)
 
 """TASK #4"""
+print("_____________TASK #4______________")
 
 
 def type_check(correct_type):
@@ -88,7 +101,7 @@ def times2(num):
 
 
 print(times2(2))
-times2('Not A Number')
+times2('Not A Number')  # "Bad Type" should be printed, since non-int passed to decorated function
 
 
 @type_check(str)
@@ -97,4 +110,4 @@ def first_letter(word):
 
 
 print(first_letter('Hello World'))
-first_letter(['Not', 'A', 'String'])
+first_letter(['Not', 'A', 'String'])  # "Bad Type" should be printed, since non-str passed to decorated function

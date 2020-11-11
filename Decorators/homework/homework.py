@@ -1,15 +1,13 @@
-# 1. double_result
-# This decorator function should return the result of another function multiplied by two
+import logging.handlers
+
+"""TASK #1"""
+
+
 def double_result(func):
-    # return function result multiplied by two
-    pass
+    def real_double_result(*args, **kwargs):
+        return func(*args, **kwargs) * 2
 
-
-def add(a, b):
-    return a + b
-
-
-add(5, 5)  # 10
+    return real_double_result
 
 
 @double_result
@@ -17,16 +15,18 @@ def add(a, b):
     return a + b
 
 
-add(5, 5)  # 20
+"""TASK #2"""
 
-
-# 2. only_even_parameters
-# This decorator function should only allow a function to have even parameters,
-# otherwise return the string "Please only use even numbers!"
 
 def only_even_parameters(func):
-    # if args passed to func are not even - return "Please only use even numbers!"
-    pass
+    def check_even_numbers(*args):
+        for numbers in args:
+            if numbers % 2 != 0:
+                return "Please only use even numbers!"
+            else:
+                return func(*args)
+
+    return check_even_numbers
 
 
 @only_even_parameters
@@ -34,8 +34,7 @@ def add(a, b):
     return a + b
 
 
-add(5, 5)  # "Please add even numbers!"
-add(4, 4)  # 8
+print(add(2, 2))
 
 
 @only_even_parameters
@@ -43,36 +42,44 @@ def multiply(a, b, c, d, e):
     return a * b * c * d * e
 
 
-# 3. logged
-# Write a decorator which wraps functions to log function arguments and the return value on each call.
-# Provide support for both positional and named arguments (your wrapper function should take both *args
-# and **kwargs and print them both):
+"""TASK #3"""
+
+logger = logging.getLogger("Logging args and returns")
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+logger.addHandler(handler)
+
 
 def logged(func):
-    # log function arguments and its return value
-    pass
+    def logging_args(*args, **kwargs):
+        logger.info(f"Arguments: {args} \nKeyword Arguments: {kwargs} \nResult of a function: {func(*args)}")
+        return func(*args)
+
+    return logging_args
 
 
 @logged
-def func(*args):
-    return 3 + len(args)
+def funky(*args):
+    return 5 + len(args)
 
 
-func(4, 4, 4)
+print(funky(4, 4, 4))
 
 
-# you called func(4, 4, 4)
-# it returned 6
+"""TASK #4"""
 
-
-# 4. type_check (see pass_args_to_decorator.py from lecture for example)
-# you should be able to pass 1 argument to decorator - type.
-# decorator should check if the input to the function is correct based on type.
-# If it is wrong, it should print("Bad Type"), otherwise function should be executed.
 
 def type_check(correct_type):
-    # put code here
-    pass
+    def decorator_args(func):
+        def wrapper(num):
+            if correct_type != type(num):
+                return print("Bad Type")
+            else:
+                return func(num)
+
+        return wrapper
+
+    return decorator_args
 
 
 @type_check(int)
@@ -81,7 +88,7 @@ def times2(num):
 
 
 print(times2(2))
-times2('Not A Number')  # "Bad Type" should be printed, since non-int passed to decorated function
+times2('Not A Number')
 
 
 @type_check(str)
@@ -90,4 +97,4 @@ def first_letter(word):
 
 
 print(first_letter('Hello World'))
-first_letter(['Not', 'A', 'String'])  # "Bad Type" should be printed, since non-str passed to decorated function
+first_letter(['Not', 'A', 'String'])

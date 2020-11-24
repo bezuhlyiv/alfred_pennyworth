@@ -49,12 +49,15 @@ try:
 except ValueError as e:
     print(e)
 
+
 @only_even_parameters
 def multiply(a, b, c, d, e):
     return a * b * c * d * e
 
-
-print(f"ANOTHER TEST:\n\nResult of 1 * 2 * 2 * 2 * 2 is\n{multiply(1, 2, 2, 2, 2)}\n")
+try:
+    print(f"ANOTHER TEST:\n\nResult of 1 * 2 * 2 * 2 * 2 is\n{multiply(1, 2, 2, 2, 2)}\n")
+except ValueError as e:
+    print(e)
 """TASK #3"""
 
 logger = logging.getLogger("Logging args and returns")
@@ -88,7 +91,7 @@ def type_check(correct_type):
     def decorator_args(func):
         def wrapper(num):
             if correct_type != type(num):
-                return print("Bad Type")
+                raise ValueError("Bad Type")
             else:
                 return func(num)
 
@@ -102,8 +105,11 @@ def times2(num):
     return num * 2
 
 
-print(times2(2))
-times2('Not A Number')  # "Bad Type" should be printed, since non-int passed to decorated function
+try:
+    print(times2(2))
+    times2('Not A Number')  # "Bad Type" should be printed, since non-int passed to decorated function
+except ValueError as e:
+    print(e)
 
 
 @type_check(str)
@@ -111,5 +117,8 @@ def first_letter(word):
     return word[0]
 
 
-print(first_letter('Hello World'))
-first_letter(['Not', 'A', 'String'])  # "Bad Type" should be printed, since non-str passed to decorated function
+try:
+    print(first_letter('Hello World'))
+    first_letter(['Not', 'A', 'String'])  # "Bad Type" should be printed, since non-str passed to decorated function
+except ValueError as e:
+    print(e)

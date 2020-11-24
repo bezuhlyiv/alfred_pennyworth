@@ -1,15 +1,20 @@
-# 1. double_result
-# This decorator function should return the result of another function multiplied by two
+import logging.handlers
+
+"""TASK #1"""
+
+
 def double_result(func):
-    # return function result multiplied by two
-    pass
+    def real_double_result(*args, **kwargs):
+        return func(*args, **kwargs) * 2
+
+    return real_double_result
 
 
 def add(a, b):
     return a + b
 
 
-add(5, 5)  # 10
+print(f"__________TASK #1__________:\n\nTest: 1 + 2 = {add(1, 2)}")
 
 
 @double_result
@@ -17,16 +22,20 @@ def add(a, b):
     return a + b
 
 
-add(5, 5)  # 20
+print(f"After multiplying the result of 1 + 2 by 2 the result is: {add(1, 2)}\n")
 
+"""TASK #2"""
 
-# 2. only_even_parameters
-# This decorator function should only allow a function to have even parameters,
-# otherwise return the string "Please only use even numbers!"
 
 def only_even_parameters(func):
-    # if args passed to func are not even - return "Please only use even numbers!"
-    pass
+    def check_even_numbers(*args):
+        for numbers in args:
+            if numbers % 2 != 0:
+                raise ValueError("Please only use even numbers!")
+            else:
+                return func(*args)
+
+    return check_even_numbers
 
 
 @only_even_parameters
@@ -34,45 +43,61 @@ def add(a, b):
     return a + b
 
 
-add(5, 5)  # "Please add even numbers!"
-add(4, 4)  # 8
+try:
+    print(f"______________TASK #2_______________\n\nThe result of 2 + 2 is \n==>{add(2, 2)}\n")
+    print(f"The result of 1 + 2:\n==>{add(1, 2)}\n")
+except ValueError as e:
+    print(e)
 
 
 @only_even_parameters
 def multiply(a, b, c, d, e):
     return a * b * c * d * e
 
+try:
+    print(f"ANOTHER TEST:\n\nResult of 1 * 2 * 2 * 2 * 2 is\n{multiply(1, 2, 2, 2, 2)}\n")
+except ValueError as e:
+    print(e)
+"""TASK #3"""
 
-# 3. logged
-# Write a decorator which wraps functions to log function arguments and the return value on each call.
-# Provide support for both positional and named arguments (your wrapper function should take both *args
-# and **kwargs and print them both):
+logger = logging.getLogger("Logging args and returns")
+logger.setLevel(logging.INFO)
+handler = logging.StreamHandler()
+logger.addHandler(handler)
+
 
 def logged(func):
-    # log function arguments and its return value
-    pass
+    def logging_args(*args, **kwargs):
+        logger.info(f"_______________TASK #3_______________\n\nTHIS IS A LOG\n===================\nArguments: {args} "
+                    f"\nKeyword Arguments: {kwargs} \n"
+                    f"Result of a function: {func(*args)}\n===================\n____________________________________")
+        return func(*args)
+
+    return logging_args
 
 
 @logged
-def func(*args):
-    return 3 + len(args)
+def funky(*args):
+    return 5 + len(args)
 
 
-func(4, 4, 4)
+funky(4, 4, 4)
 
+"""TASK #4"""
+print("_____________TASK #4______________")
 
-# you called func(4, 4, 4)
-# it returned 6
-
-
-# 4. type_check (see pass_args_to_decorator.py from lecture for example)
-# you should be able to pass 1 argument to decorator - type.
-# decorator should check if the input to the function is correct based on type.
-# If it is wrong, it should print("Bad Type"), otherwise function should be executed.
 
 def type_check(correct_type):
-    # put code here
-    pass
+    def decorator_args(func):
+        def wrapper(num):
+            if correct_type != type(num):
+                raise ValueError("Bad Type")
+            else:
+                return func(num)
+
+        return wrapper
+
+    return decorator_args
 
 
 @type_check(int)
@@ -80,8 +105,11 @@ def times2(num):
     return num * 2
 
 
-print(times2(2))
-times2('Not A Number')  # "Bad Type" should be printed, since non-int passed to decorated function
+try:
+    print(times2(2))
+    times2('Not A Number')  # "Bad Type" should be printed, since non-int passed to decorated function
+except ValueError as e:
+    print(e)
 
 
 @type_check(str)
@@ -89,5 +117,8 @@ def first_letter(word):
     return word[0]
 
 
-print(first_letter('Hello World'))
-first_letter(['Not', 'A', 'String'])  # "Bad Type" should be printed, since non-str passed to decorated function
+try:
+    print(first_letter('Hello World'))
+    first_letter(['Not', 'A', 'String'])  # "Bad Type" should be printed, since non-str passed to decorated function
+except ValueError as e:
+    print(e)

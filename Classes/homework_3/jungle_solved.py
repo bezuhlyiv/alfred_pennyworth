@@ -78,6 +78,25 @@ def animal_generator():
 
 
 if __name__ == "__main__":
+     jungle = Jungle()
+     nature = animal_generator()
+    
+    while True:
+        try:
+            jungle.add_animal(next(nature))
+        except StopIteration:
+            break
+    
+    while True:
+        if any(isinstance(animal, Predator) for animal in jungle.animals.values()):
+            try:
+                for animal in jungle.animals.values():
+                    animal.eat(jungle=jungle)
+            except RuntimeError:
+                continue
+        else:
+            break
+    pass
     jungle = Jungle()
     nature = animal_generator()
     while True:

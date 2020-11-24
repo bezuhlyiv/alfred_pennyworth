@@ -31,7 +31,7 @@ def only_even_parameters(func):
     def check_even_numbers(*args):
         for numbers in args:
             if numbers % 2 != 0:
-                return "Please only use even numbers!"
+                raise ValueError("Please only use even numbers!")
             else:
                 return func(*args)
 
@@ -43,9 +43,11 @@ def add(a, b):
     return a + b
 
 
-print(f"______________TASK #2_______________\n\nThe result of 2 + 2 is \n==>{add(2, 2)}\n")
-print(f"The result of 1 + 2:\n==>{add(1, 2)}\n")
-
+try:
+    print(f"______________TASK #2_______________\n\nThe result of 2 + 2 is \n==>{add(2, 2)}\n")
+    print(f"The result of 1 + 2:\n==>{add(1, 2)}\n")
+except ValueError as e:
+    print(e)
 
 @only_even_parameters
 def multiply(a, b, c, d, e):
